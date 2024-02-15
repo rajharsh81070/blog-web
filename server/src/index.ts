@@ -4,6 +4,8 @@ import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import morgan from 'morgan'
 import mongoDB from './server/mongoDB'
+import authRouter from './routes/auth.route'
+import blogRouter from './routes/blog.route'
 
 const app: Express = express()
 const port = process.env.PORT
@@ -28,6 +30,9 @@ app.get(
     })
   }
 )
+
+app.use('/api/auth', authRouter)
+app.use('/api/blogs', blogRouter)
 
 // Unknown Routes
 app.all('*', (req: Request, res: Response, next: NextFunction) => {
