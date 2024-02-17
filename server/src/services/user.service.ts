@@ -5,7 +5,7 @@ import { signJwt } from '../utils/jwt'
 import { DocumentType } from '@typegoose/typegoose'
 
 export const createUser = async (input: Partial<User>) => {
-  return userModel.create(input)
+  return await userModel.create(input)
 }
 
 export const findUserById = async (id: string) => {

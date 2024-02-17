@@ -6,7 +6,7 @@ import {
   findAllBlogs,
   findBlogById,
 } from '../services/blog.service'
-import { Blog } from '../models/blog.model'
+import { findUserById } from '../services/user.service'
 
 export const createBlogHandler = async (
   req: Request<{}, {}, CreateBlogInput>,
@@ -16,12 +16,18 @@ export const createBlogHandler = async (
   try {
     const user_id = res.locals.user.id
 
-    const blog = await createBlog({ input: req.body, user_id })
+    const createdBlog = await createBlog({ input: req.body, user_id })
+
+    const blog = await findBlogById(createdBlog.id)
 
     res.status(201).json({
       status: 'success',
-      data: {
-        blog,
+      blog: {
+        id: blog.id,
+        title: blog.title,
+        content: blog.content,
+        authorName: blog.user.name,
+        createdAt: blog.createdAt,
       },
     })
   } catch (err: any) {
@@ -44,10 +50,11 @@ export const getBlogHandler = async (
     res.status(200).json({
       status: 'success',
       blog: {
+        id: blog.id,
         title: blog.title,
         content: blog.content,
-        author_name: blog.user.name,
-        created_at: blog.createdAt,
+        authorName: blog.user.name,
+        createdAt: blog.createdAt,
       },
     })
   } catch (err: any) {
@@ -66,10 +73,11 @@ export const getBlogsHandler = async (
     res.status(200).json({
       status: 'success',
       blogs: blogs.map((blog) => ({
+        id: blog.id,
         title: blog.title,
         content: blog.content,
-        author_name: blog.user.name,
-        created_at: blog.createdAt,
+        authorName: blog.user.name,
+        createdAt: blog.createdAt,
       })),
     })
   } catch (err: any) {
