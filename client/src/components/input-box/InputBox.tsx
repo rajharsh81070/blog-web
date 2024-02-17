@@ -35,7 +35,10 @@ export const InputBox = (props: IInputBoxProps) => {
   } = props
 
   return (
-    <div className="flex-shrink-0 flex flex-col items-start gap-2 min-w-full">
+    <div
+      className="flex-shrink-0 flex flex-col items-start gap-2 min-w-full"
+      data-testid="input-component"
+    >
       <div className="w-full flex justify-between">
         <p className="text-[#C5C7CA] font-sans font-medium text-sm">
           {primaryLabel}
@@ -59,11 +62,13 @@ export const InputBox = (props: IInputBoxProps) => {
           required={required}
           onChange={onInputChange}
           className="sm:w-[412px] min-w-full bg-inherit rounded-[4px] border-[1.5px] border-solid border-[#35373B] px-3 py-3 text-[#7F8084] text-base font-normal font-sans placeholder:text-[#7F8084] focus:outline-none focus:ring-2 focus:ring-[#969696] focus:border-transparent"
+          data-testid="input-element"
         />
         {type === 'password' && (
           <div
             className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5"
             onClick={toggleShowPassword}
+            data-testid="toggle-button"
           >
             {!showPassword ? (
               <AiFillEye color="#7F8084" size={20} />

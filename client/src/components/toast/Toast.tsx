@@ -48,7 +48,10 @@ const Toast = (props: IToast) => {
   if (!message) return <></>
 
   return (
-    <div className="fixed flex items-center max-w-xs w-full divide-gray-200 rounded-lg shadow divide-x bottom-5 right-5 justify-center">
+    <div
+      data-testid="toast-component"
+      className="fixed flex items-center max-w-xs w-full divide-gray-200 rounded-lg shadow divide-x bottom-5 right-5 justify-center"
+    >
       <div
         data-test-id="toastMsg"
         id="toast-default"

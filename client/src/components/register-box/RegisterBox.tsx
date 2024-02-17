@@ -18,7 +18,10 @@ const RegisterBox = (props: RegisterBoxProps) => {
   const { handleRegister, handleInputChange, formData, isLoading } = props
 
   return (
-    <div className="m-3 sm:flex-shrink-0 bg-[#27292D] border-2 rounded-lg border-solid border-[#969696] flex py-10 px-6 justify-center">
+    <div
+      data-testid="register-box-component"
+      className="m-3 sm:flex-shrink-0 bg-[#27292D] border-2 rounded-lg border-solid border-[#969696] flex py-10 px-6 justify-center"
+    >
       <div className="flex flex-col gap-11">
         <div className="flex flex-col items-center justify-center gap-2">
           <p className="font-medium text-sm text-[#6B6C70] not-italic tracking-[0.42px]">
@@ -45,7 +48,7 @@ const RegisterBox = (props: RegisterBoxProps) => {
               value={formData.name}
               primaryLabel="Name"
               name="name"
-              placeholder="What is you name ?"
+              placeholder="What is your name ?"
               type="text"
               required={true}
               onInputChange={handleInputChange}

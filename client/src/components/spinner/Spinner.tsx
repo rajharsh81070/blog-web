@@ -11,6 +11,7 @@ const Spinner: React.FC<SpinnerProps> = ({ size = 32, containerHeight }) => {
       className={`flex items-center justify-center ${
         containerHeight ? containerHeight : 'h-screen'
       }`}
+      data-testid="spinner"
     >
       <div
         style={{

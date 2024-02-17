@@ -1,3 +1,4 @@
+import React from 'react'
 import Spinner from '../spinner/Spinner'
 
 export interface IButtonProps {
@@ -19,6 +20,7 @@ const Button = (props: IButtonProps) => {
           ? 'cursor-default opacity-50'
           : 'cursor-pointer opacity-100 hover:bg-blue-700'
       }`}
+      data-testid="button"
     >
       {isLoading ? (
         <div className="flex justify-center items-center">
