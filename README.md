@@ -28,7 +28,7 @@
 - TailwindCSS
 - @material-tailwind/react
 
-## Rrerequisite
+## Prerequisite
 
 You need to have a redis server running locally on your system. To install and run a server locally follow this documentation:- https://redis.io/docs/install/install-redis/
 
