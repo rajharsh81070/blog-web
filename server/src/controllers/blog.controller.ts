@@ -6,7 +6,7 @@ import {
   findAllBlogs,
   findBlogById,
 } from '../services/blog.service'
-import { findUserById } from '../services/user.service'
+import { client, getAsync, setAsync } from '../server/redis'
 
 export const createBlogHandler = async (
   req: Request<{}, {}, CreateBlogInput>,
@@ -19,6 +19,8 @@ export const createBlogHandler = async (
     const createdBlog = await createBlog({ input: req.body, user_id })
 
     const blog = await findBlogById(createdBlog.id)
+
+    await client.del('blogs')
 
     res.status(201).json({
       status: 'success',
@@ -41,13 +43,21 @@ export const getBlogHandler = async (
   next: NextFunction
 ) => {
   try {
-    const blog = await findBlogById(req.params.blogId)
+    const blogId = req.params.blogId
+
+    const cachedBlog = await getAsync(blogId)
+
+    if (cachedBlog) {
+      res.json(JSON.parse(cachedBlog))
+    }
+
+    const blog = await findBlogById(blogId)
 
     if (!blog) {
       return next(new AppError('Blog with that ID not found', 404))
     }
 
-    res.status(200).json({
+    const responseData = {
       status: 'success',
       blog: {
         id: blog.id,
@@ -56,7 +66,11 @@ export const getBlogHandler = async (
         authorName: blog.user.name,
         createdAt: blog.createdAt,
       },
-    })
+    }
+
+    await setAsync(blogId, JSON.stringify(responseData))
+
+    res.status(200).json(responseData)
   } catch (err: any) {
     next(err)
   }
@@ -68,9 +82,15 @@ export const getBlogsHandler = async (
   next: NextFunction
 ) => {
   try {
+    const cachedBlogs = await getAsync('blogs')
+
+    if (cachedBlogs) {
+      res.json(JSON.parse(cachedBlogs))
+    }
+
     const blogs = await findAllBlogs()
 
-    res.status(200).json({
+    const responseData = {
       status: 'success',
       blogs: blogs.map((blog) => ({
         id: blog.id,
@@ -79,7 +99,11 @@ export const getBlogsHandler = async (
         authorName: blog.user.name,
         createdAt: blog.createdAt,
       })),
-    })
+    }
+
+    await setAsync('blogs', JSON.stringify(responseData))
+
+    res.status(200).json(responseData)
   } catch (err: any) {
     next(err)
   }
