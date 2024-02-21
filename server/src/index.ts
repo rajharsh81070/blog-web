@@ -13,11 +13,13 @@ const port = process.env.PORT
 app.use(express.json())
 app.use(cookieParser())
 
+const frontendUrl = process.env?.FRONTEND_URL ?? 'http://localhost:3000'
+
 if (process.env.NODE_ENV === 'development') app.use(morgan('dev'))
 app.use(
   cors({
     credentials: true,
-    origin: ['http://localhost:3000'],
+    origin: [frontendUrl],
   })
 )
 

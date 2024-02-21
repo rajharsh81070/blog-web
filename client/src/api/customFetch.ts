@@ -5,7 +5,8 @@ import {
   FetchBaseQueryError,
 } from '@reduxjs/toolkit/query'
 
-const baseUrl = `http://localhost:2000/api/`
+const backendUrl = process.env?.BACKEND_URL ?? 'http://localhost:2000'
+const baseUrl = `${backendUrl}/api/`
 
 const baseQuery = fetchBaseQuery({
   baseUrl,
