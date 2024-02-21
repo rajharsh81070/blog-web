@@ -9,7 +9,11 @@ const client = new Redis({
 
 const getAsync = promisify(client.get).bind(client)
 const setAsync = promisify(client.set).bind(client)
+let isAvailable = true
 
-client.on('error', (err) => console.error('Redis Client Error:', err))
+client.on('error', (err) => {
+  isAvailable = false
+  console.error('Redis Client Error:', err)
+})
 
-export { client, getAsync, setAsync }
+export { client, getAsync, setAsync, isAvailable }

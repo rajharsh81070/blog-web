@@ -6,7 +6,7 @@ import {
   findAllBlogs,
   findBlogById,
 } from '../services/blog.service'
-import { client, getAsync, setAsync } from '../server/redis'
+import { client, getAsync, setAsync, isAvailable } from '../server/redis'
 
 export const createBlogHandler = async (
   req: Request<{}, {}, CreateBlogInput>,
@@ -20,7 +20,7 @@ export const createBlogHandler = async (
 
     const blog = await findBlogById(createdBlog.id)
 
-    await client.del('blogs')
+    isAvailable && (await client.del('blogs'))
 
     res.status(201).json({
       status: 'success',
@@ -45,10 +45,12 @@ export const getBlogHandler = async (
   try {
     const blogId = req.params.blogId
 
-    const cachedBlog = await getAsync(blogId)
+    if (isAvailable) {
+      const cachedBlog = await getAsync(blogId)
 
-    if (cachedBlog) {
-      res.json(JSON.parse(cachedBlog))
+      if (cachedBlog) {
+        res.json(JSON.parse(cachedBlog))
+      }
     }
 
     const blog = await findBlogById(blogId)
@@ -68,7 +70,7 @@ export const getBlogHandler = async (
       },
     }
 
-    await setAsync(blogId, JSON.stringify(responseData))
+    isAvailable && (await setAsync(blogId, JSON.stringify(responseData)))
 
     res.status(200).json(responseData)
   } catch (err: any) {
@@ -82,10 +84,12 @@ export const getBlogsHandler = async (
   next: NextFunction
 ) => {
   try {
-    const cachedBlogs = await getAsync('blogs')
+    if (isAvailable) {
+      const cachedBlogs = await getAsync('blogs')
 
-    if (cachedBlogs) {
-      res.json(JSON.parse(cachedBlogs))
+      if (cachedBlogs) {
+        res.json(JSON.parse(cachedBlogs))
+      }
     }
 
     const blogs = await findAllBlogs()
@@ -101,7 +105,7 @@ export const getBlogsHandler = async (
       })),
     }
 
-    await setAsync('blogs', JSON.stringify(responseData))
+    isAvailable && (await setAsync('blogs', JSON.stringify(responseData)))
 
     res.status(200).json(responseData)
   } catch (err: any) {
