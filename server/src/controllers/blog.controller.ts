@@ -1,4 +1,3 @@
-import { NextFunction, Request, Response } from 'express'
 import { CreateBlogInput, GetBlogInput } from '../schema/blog.schema'
 import AppError from '../utils/appError'
 import {
@@ -8,11 +7,7 @@ import {
 } from '../services/blog.service'
 import { client, getAsync, setAsync, isAvailable } from '../server/redis'
 
-export const createBlogHandler = async (
-  req: Request<{}, {}, CreateBlogInput>,
-  res: Response,
-  next: NextFunction
-) => {
+export const createBlogHandler = async (req: any, res: any, next: any) => {
   try {
     const user_id = res.locals.user.id
 
@@ -37,11 +32,7 @@ export const createBlogHandler = async (
   }
 }
 
-export const getBlogHandler = async (
-  req: Request<GetBlogInput>,
-  res: Response,
-  next: NextFunction
-) => {
+export const getBlogHandler = async (req: any, res: any, next: any) => {
   try {
     const blogId = req.params.blogId
 
@@ -78,11 +69,7 @@ export const getBlogHandler = async (
   }
 }
 
-export const getBlogsHandler = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const getBlogsHandler = async (req: Request, res: any, next: any) => {
   try {
     if (isAvailable) {
       const cachedBlogs = await getAsync('blogs')

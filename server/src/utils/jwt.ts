@@ -1,6 +1,6 @@
-import jwt, { SignOptions } from 'jsonwebtoken'
+import jwt from 'jsonwebtoken'
 
-export const signJwt = (payload: Object, options: SignOptions = {}) => {
+export const signJwt = (payload: Object, options: any = {}) => {
   const privateKey = process.env[`JWT_SECRET`] || ''
   return jwt.sign(payload, privateKey, {
     ...(options && options),

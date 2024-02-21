@@ -1,0 +1,7 @@
+declare module 'jsonwebtoken'
+declare module 'lodash'
+declare module 'express'
+declare module 'express'
+declare module 'bcryptjs'
+declare module 'cors'
+declare module 'cookie-parser'

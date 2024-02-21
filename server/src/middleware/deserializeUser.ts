@@ -1,13 +1,8 @@
-import { NextFunction, Request, Response } from 'express'
 import { findUserById } from '../services/user.service'
 import AppError from '../utils/appError'
 import { verifyJwt } from '../utils/jwt'
 
-export const deserializeUser = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const deserializeUser = async (req: any, res: any, next: any) => {
   try {
     let access_token
     if (

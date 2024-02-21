@@ -35,7 +35,7 @@ app.all('/api/*', (req, res, next) => {
     next(err);
 });
 // Global Error Handler
-app.use((err, req, res, next) => {
+app.use((err, req, res, _next) => {
     err.status = err.status || 'error';
     err.statusCode = err.statusCode || 500;
     res.status(err.statusCode).json({

@@ -1,13 +1,8 @@
-import { NextFunction, Request, Response } from 'express'
 import { CreateUserInput, LoginUserInput } from '../schema/user.schema'
 import { createUser, findUser, signToken } from '../services/user.service'
 import AppError from '../utils/appError'
 
-export const registerHandler = async (
-  req: Request<{}, {}, CreateUserInput>,
-  res: Response,
-  next: NextFunction
-) => {
+export const registerHandler = async (req: any, res: any, next: any) => {
   try {
     const user = await createUser({
       email: req.body.email,
@@ -32,11 +27,7 @@ export const registerHandler = async (
   }
 }
 
-export const loginHandler = async (
-  req: Request<{}, {}, LoginUserInput>,
-  res: Response,
-  next: NextFunction
-) => {
+export const loginHandler = async (req: any, res: any, next: any) => {
   try {
     let user = await findUser({ email: req.body.email })
 
@@ -60,11 +51,7 @@ export const loginHandler = async (
   }
 }
 
-export const logoutHandler = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const logoutHandler = async (req: Request, res: any, next: any) => {
   try {
     res.status(200).json({ status: 'Logout Successfull' })
   } catch (err: any) {

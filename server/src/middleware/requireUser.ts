@@ -1,11 +1,6 @@
-import { NextFunction, Request, Response } from 'express'
 import AppError from '../utils/appError'
 
-export const requireUser = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const requireUser = (req: any, res: any, next: any) => {
   try {
     const user = res.locals.user
     if (!user) {
