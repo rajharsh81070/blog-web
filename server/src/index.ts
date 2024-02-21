@@ -6,6 +6,7 @@ import morgan from 'morgan'
 import mongoDB from './server/mongoDB'
 import authRouter from './routes/auth.route'
 import blogRouter from './routes/blog.route'
+import path from 'path'
 
 const app: Express = express()
 const port = process.env.PORT
@@ -37,7 +38,7 @@ app.use('/api/auth', authRouter)
 app.use('/api/blogs', blogRouter)
 
 // Unknown Routes
-app.all('*', (req: Request, res: Response, next: NextFunction) => {
+app.all('/api/*', (req: Request, res: Response, next: NextFunction) => {
   const err = new Error(`Route ${req.originalUrl} not found`) as any
   err.statusCode = 404
   next(err)
@@ -53,6 +54,14 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
     message: err.message,
   })
 })
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../../../client/build')))
+
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../../../client/build', 'index.html'))
+  })
+}
 
 app.listen(port, () => {
   console.log(`⚡️[server]: Server is running at http://localhost:${port}`)
